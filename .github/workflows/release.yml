@@ -1,0 +1,139 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r23c
+      - name: Build Android libraries
+        run: ANDROID_NDK_HOME="$ANDROID_NDK_ROOT" ./native/build-android.sh
+      - name: Package artifact
+        run: |
+          mkdir -p dist/imageprocessing.koplugin
+          cp README.md dist/imageprocessing.koplugin/
+          cp ./*.lua dist/imageprocessing.koplugin/
+          cp -R resources dist/imageprocessing.koplugin/
+          mkdir -p dist/imageprocessing.koplugin/libs/android/armeabi-v7a
+          mkdir -p dist/imageprocessing.koplugin/libs/android/arm64-v8a
+          cp libs/android/armeabi-v7a/libimageprocessing.so dist/imageprocessing.koplugin/libs/android/armeabi-v7a/
+          cp libs/android/arm64-v8a/libimageprocessing.so dist/imageprocessing.koplugin/libs/android/arm64-v8a/
+          cd dist
+          zip -r imageprocessing.koplugin-android.zip imageprocessing.koplugin
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/imageprocessing.koplugin-android.zip
+
+  kobo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential autoconf automake bison flex gawk libtool libtool-bin libncurses-dev curl file git gperf help2man texinfo unzip wget zip rsync
+      - name: Clone koxtoolchain
+        run: git clone --recursive https://github.com/koreader/koxtoolchain.git "$HOME/koxtoolchain"
+      - name: Build Kobo toolchain
+        run: |
+          cd "$HOME/koxtoolchain"
+          ./gen-tc.sh kobov5
+      - name: Build Kobo library
+        run: KOXTOOLCHAIN="$HOME/koxtoolchain" ./native/build-koxtoolchain.sh kobov5
+      - name: Package artifact
+        run: |
+          mkdir -p dist/imageprocessing.koplugin
+          cp README.md dist/imageprocessing.koplugin/
+          cp ./*.lua dist/imageprocessing.koplugin/
+          cp -R resources dist/imageprocessing.koplugin/
+          mkdir -p dist/imageprocessing.koplugin/libs/kobo/kobov5
+          cp libs/kobo/kobov5/libimageprocessing.so dist/imageprocessing.koplugin/libs/kobo/kobov5/
+          cd dist
+          zip -r imageprocessing.koplugin-kobo.zip imageprocessing.koplugin
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/imageprocessing.koplugin-kobo.zip
+
+  kindle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential autoconf automake bison flex gawk libtool libtool-bin libncurses-dev curl file git gperf help2man texinfo unzip wget zip rsync
+      - name: Clone koxtoolchain
+        run: git clone --recursive https://github.com/koreader/koxtoolchain.git "$HOME/koxtoolchain"
+      - name: Build Kindle toolchains
+        run: |
+          cd "$HOME/koxtoolchain"
+          ./gen-tc.sh kindle
+          ./gen-tc.sh kindle5
+          ./gen-tc.sh kindlepw2
+          ./gen-tc.sh kindlehf
+      - name: Build Kindle libraries
+        run: KOXTOOLCHAIN="$HOME/koxtoolchain" ./native/build-koxtoolchain.sh kindle kindle5 kindlepw2 kindlehf
+      - name: Package artifact
+        run: |
+          mkdir -p dist/imageprocessing.koplugin
+          cp README.md dist/imageprocessing.koplugin/
+          cp ./*.lua dist/imageprocessing.koplugin/
+          cp -R resources dist/imageprocessing.koplugin/
+          mkdir -p dist/imageprocessing.koplugin/libs/kindle/kindle-legacy
+          mkdir -p dist/imageprocessing.koplugin/libs/kindle/kindle
+          mkdir -p dist/imageprocessing.koplugin/libs/kindle/kindlepw2
+          mkdir -p dist/imageprocessing.koplugin/libs/kindle/kindlehf
+          cp libs/kindle/kindle-legacy/libimageprocessing.so dist/imageprocessing.koplugin/libs/kindle/kindle-legacy/
+          cp libs/kindle/kindle/libimageprocessing.so dist/imageprocessing.koplugin/libs/kindle/kindle/
+          cp libs/kindle/kindlepw2/libimageprocessing.so dist/imageprocessing.koplugin/libs/kindle/kindlepw2/
+          cp libs/kindle/kindlehf/libimageprocessing.so dist/imageprocessing.koplugin/libs/kindle/kindlehf/
+          cd dist
+          zip -r imageprocessing.koplugin-kindle.zip imageprocessing.koplugin
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/imageprocessing.koplugin-kindle.zip
+
+  pocketbook:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential autoconf automake bison flex gawk libtool libtool-bin libncurses-dev curl file git gperf help2man texinfo unzip wget zip rsync
+      - name: Clone koxtoolchain
+        run: git clone --recursive https://github.com/koreader/koxtoolchain.git "$HOME/koxtoolchain"
+      - name: Build PocketBook toolchain
+        run: |
+          cd "$HOME/koxtoolchain"
+          ./gen-tc.sh pocketbook
+      - name: Build PocketBook library
+        run: KOXTOOLCHAIN="$HOME/koxtoolchain" ./native/build-koxtoolchain.sh pocketbook
+      - name: Package artifact
+        run: |
+          mkdir -p dist/imageprocessing.koplugin
+          cp README.md dist/imageprocessing.koplugin/
+          cp ./*.lua dist/imageprocessing.koplugin/
+          cp -R resources dist/imageprocessing.koplugin/
+          mkdir -p dist/imageprocessing.koplugin/libs/pocketbook/pocketbook
+          cp libs/pocketbook/pocketbook/libimageprocessing.so dist/imageprocessing.koplugin/libs/pocketbook/pocketbook/
+          cd dist
+          zip -r imageprocessing.koplugin-pocketbook.zip imageprocessing.koplugin
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/imageprocessing.koplugin-pocketbook.zip
