@@ -27,7 +27,7 @@ jobs:
         with:
           ndk-version: r23c
       - name: Build Android libraries
-        run: ANDROID_NDK_HOME="$ANDROID_NDK_ROOT" ./native/build-android.sh
+        run: ANDROID_NDK_HOME="$ANDROID_NDK_ROOT" sh ./native/build-android.sh
       - name: Package artifact
         run: |
           mkdir -p dist/imageprocessing.koplugin
@@ -63,7 +63,7 @@ jobs:
           cd "$HOME/koxtoolchain"
           ./gen-tc.sh kobov5
       - name: Build Kobo library
-        run: KOXTOOLCHAIN="$HOME/koxtoolchain" ./native/build-koxtoolchain.sh kobov5
+        run: KOXTOOLCHAIN="$HOME/koxtoolchain" bash ./native/build-koxtoolchain.sh kobov5
       - name: Package artifact
         run: |
           mkdir -p dist/imageprocessing.koplugin
@@ -100,7 +100,7 @@ jobs:
           ./gen-tc.sh kindlepw2
           ./gen-tc.sh kindlehf
       - name: Build Kindle libraries
-        run: KOXTOOLCHAIN="$HOME/koxtoolchain" ./native/build-koxtoolchain.sh kindle kindle5 kindlepw2 kindlehf
+        run: KOXTOOLCHAIN="$HOME/koxtoolchain" bash ./native/build-koxtoolchain.sh kindle kindle5 kindlepw2 kindlehf
       - name: Package artifact
         run: |
           mkdir -p dist/imageprocessing.koplugin
@@ -140,7 +140,7 @@ jobs:
           cd "$HOME/koxtoolchain"
           ./gen-tc.sh pocketbook
       - name: Build PocketBook library
-        run: KOXTOOLCHAIN="$HOME/koxtoolchain" ./native/build-koxtoolchain.sh pocketbook
+        run: KOXTOOLCHAIN="$HOME/koxtoolchain" bash ./native/build-koxtoolchain.sh pocketbook
       - name: Package artifact
         run: |
           mkdir -p dist/imageprocessing.koplugin

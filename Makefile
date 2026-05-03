@@ -1,13 +1,13 @@
 .PHONY: android koxtoolchain linux clean
 
 android:
-	./native/build-android.sh
+	sh ./native/build-android.sh
 
 koxtoolchain:
-	./native/build-koxtoolchain.sh
+	bash ./native/build-koxtoolchain.sh
 
 linux:
-	./native/build-linux.sh
+	sh ./native/build-linux.sh
 
 clean:
 	rm -f libs/android/armeabi-v7a/libimageprocessing.so
