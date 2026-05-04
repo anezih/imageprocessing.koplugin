@@ -39,16 +39,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Install build dependencies
+      - name: Download koxtoolchain helper
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential autoconf automake bison flex gawk libtool libtool-bin libncurses-dev curl file git gperf help2man texinfo unzip wget zip rsync
-      - name: Clone koxtoolchain
-        run: git clone --recursive https://github.com/koreader/koxtoolchain.git "$HOME/koxtoolchain"
-      - name: Build Kobo toolchain
+          mkdir -p "$HOME/koxtoolchain/refs"
+          curl -fsSL https://raw.githubusercontent.com/koreader/koxtoolchain/2025.05/refs/x-compile.sh -o "$HOME/koxtoolchain/refs/x-compile.sh"
+      - name: Download Kobo toolchain
         run: |
-          cd "$HOME/koxtoolchain"
-          ./gen-tc.sh kobov5
+          curl -fsSL https://github.com/koreader/koxtoolchain/releases/download/2025.05/kobov5.tar.gz -o /tmp/kobov5.tar.gz
+          tar -xzf /tmp/kobov5.tar.gz -C "$HOME"
       - name: Build Kobo library
         run: KOXTOOLCHAIN="$HOME/koxtoolchain" bash ./native/build-koxtoolchain.sh kobov5
       - name: Package artifact
@@ -71,19 +69,20 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Install build dependencies
+      - name: Download koxtoolchain helper
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential autoconf automake bison flex gawk libtool libtool-bin libncurses-dev curl file git gperf help2man texinfo unzip wget zip rsync
-      - name: Clone koxtoolchain
-        run: git clone --recursive https://github.com/koreader/koxtoolchain.git "$HOME/koxtoolchain"
-      - name: Build Kindle toolchains
+          mkdir -p "$HOME/koxtoolchain/refs"
+          curl -fsSL https://raw.githubusercontent.com/koreader/koxtoolchain/2025.05/refs/x-compile.sh -o "$HOME/koxtoolchain/refs/x-compile.sh"
+      - name: Download Kindle toolchains
         run: |
-          cd "$HOME/koxtoolchain"
-          ./gen-tc.sh kindle
-          ./gen-tc.sh kindle5
-          ./gen-tc.sh kindlepw2
-          ./gen-tc.sh kindlehf
+          curl -fsSL https://github.com/koreader/koxtoolchain/releases/download/2025.05/kindle.tar.gz -o /tmp/kindle.tar.gz
+          curl -fsSL https://github.com/koreader/koxtoolchain/releases/download/2025.05/kindle5.tar.gz -o /tmp/kindle5.tar.gz
+          curl -fsSL https://github.com/koreader/koxtoolchain/releases/download/2025.05/kindlepw2.tar.gz -o /tmp/kindlepw2.tar.gz
+          curl -fsSL https://github.com/koreader/koxtoolchain/releases/download/2025.05/kindlehf.tar.gz -o /tmp/kindlehf.tar.gz
+          tar -xzf /tmp/kindle.tar.gz -C "$HOME"
+          tar -xzf /tmp/kindle5.tar.gz -C "$HOME"
+          tar -xzf /tmp/kindlepw2.tar.gz -C "$HOME"
+          tar -xzf /tmp/kindlehf.tar.gz -C "$HOME"
       - name: Build Kindle libraries
         run: KOXTOOLCHAIN="$HOME/koxtoolchain" bash ./native/build-koxtoolchain.sh kindle kindle5 kindlepw2 kindlehf
       - name: Package artifact
@@ -112,16 +111,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Install build dependencies
+      - name: Download koxtoolchain helper
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential autoconf automake bison flex gawk libtool libtool-bin libncurses-dev curl file git gperf help2man texinfo unzip wget zip rsync
-      - name: Clone koxtoolchain
-        run: git clone --recursive https://github.com/koreader/koxtoolchain.git "$HOME/koxtoolchain"
-      - name: Build PocketBook toolchain
+          mkdir -p "$HOME/koxtoolchain/refs"
+          curl -fsSL https://raw.githubusercontent.com/koreader/koxtoolchain/2025.05/refs/x-compile.sh -o "$HOME/koxtoolchain/refs/x-compile.sh"
+      - name: Download PocketBook toolchain
         run: |
-          cd "$HOME/koxtoolchain"
-          ./gen-tc.sh pocketbook
+          curl -fsSL https://github.com/koreader/koxtoolchain/releases/download/2025.05/pocketbook.tar.gz -o /tmp/pocketbook.tar.gz
+          tar -xzf /tmp/pocketbook.tar.gz -C "$HOME"
       - name: Build PocketBook library
         run: KOXTOOLCHAIN="$HOME/koxtoolchain" bash ./native/build-koxtoolchain.sh pocketbook
       - name: Package artifact

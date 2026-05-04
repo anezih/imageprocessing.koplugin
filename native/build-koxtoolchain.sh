@@ -52,7 +52,7 @@ for target in "${TARGETS[@]}"; do
 
     (
         # shellcheck source=/dev/null
-        source "$X_COMPILE" "$target" env ko
+        source "$X_COMPILE" "$target" env bare
         cxx="${CXX:-${CROSS_PREFIX}g++}"
         "$cxx" \
             ${CPPFLAGS:-} \
