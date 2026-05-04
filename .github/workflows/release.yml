@@ -47,6 +47,7 @@ jobs:
         run: |
           curl -fsSL https://github.com/koreader/koxtoolchain/releases/download/2025.05/kobov5.tar.gz -o /tmp/kobov5.tar.gz
           tar -xzf /tmp/kobov5.tar.gz -C "$HOME"
+          find "$HOME/x-tools" -mindepth 2 -maxdepth 2 -type d -name bin -print >> "$GITHUB_PATH"
       - name: Build Kobo library
         run: KOXTOOLCHAIN="$HOME/koxtoolchain" bash ./native/build-koxtoolchain.sh kobov5
       - name: Package artifact
@@ -83,6 +84,7 @@ jobs:
           tar -xzf /tmp/kindle5.tar.gz -C "$HOME"
           tar -xzf /tmp/kindlepw2.tar.gz -C "$HOME"
           tar -xzf /tmp/kindlehf.tar.gz -C "$HOME"
+          find "$HOME/x-tools" -mindepth 2 -maxdepth 2 -type d -name bin -print >> "$GITHUB_PATH"
       - name: Build Kindle libraries
         run: KOXTOOLCHAIN="$HOME/koxtoolchain" bash ./native/build-koxtoolchain.sh kindle kindle5 kindlepw2 kindlehf
       - name: Package artifact
@@ -119,6 +121,7 @@ jobs:
         run: |
           curl -fsSL https://github.com/koreader/koxtoolchain/releases/download/2025.05/pocketbook.tar.gz -o /tmp/pocketbook.tar.gz
           tar -xzf /tmp/pocketbook.tar.gz -C "$HOME"
+          find "$HOME/x-tools" -mindepth 2 -maxdepth 2 -type d -name bin -print >> "$GITHUB_PATH"
       - name: Build PocketBook library
         run: KOXTOOLCHAIN="$HOME/koxtoolchain" bash ./native/build-koxtoolchain.sh pocketbook
       - name: Package artifact
