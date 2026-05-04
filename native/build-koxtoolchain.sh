@@ -12,6 +12,10 @@ if [[ ! -f "$X_COMPILE" ]]; then
     exit 1
 fi
 
+# Prebuilt release usage only ships the helper script, not a full checkout.
+# x-compile.sh still expects the koxtoolchain root to be available as _XTC_DIR.
+export _XTC_DIR="$KOXTOOLCHAIN"
+
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PLUGIN_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 SRC="$SCRIPT_DIR/imageprocessing.cpp"
