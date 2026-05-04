@@ -15,6 +15,9 @@ fi
 # Prebuilt release usage only ships the helper script, not a full checkout.
 # x-compile.sh still expects the koxtoolchain root to be available as _XTC_DIR.
 export _XTC_DIR="$KOXTOOLCHAIN"
+# Match the helper's expected default when the caller doesn't request
+# the legacy libstdc++ ABI explicitly.
+export LEGACY_GLIBCXX_ABI="${LEGACY_GLIBCXX_ABI:-0}"
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PLUGIN_DIR="$(cd -- "$SCRIPT_DIR/.." && pwd)"
