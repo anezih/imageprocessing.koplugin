@@ -5,6 +5,12 @@ path with an AVIR/LANCIR based native implementation when `libimageprocessing.so
 available. If the native library cannot be loaded, or a BlitBuffer type is not
 supported, KOReader's default scaler is used.
 
+https://github.com/user-attachments/assets/c4921f71-6b73-4625-974e-7b2d19dc973f
+
+*Plugin preview*
+
+<hr>
+
 After cloning this repository, initialize the AVIR submodule:
 
 ```sh
